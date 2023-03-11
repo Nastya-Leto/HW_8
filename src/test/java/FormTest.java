@@ -2,8 +2,6 @@ import com.github.javafaker.Faker;
 import pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
-import java.util.Locale;
-
 import static utils.RandomUtils.getRandomInt;
 import static utils.RandomUtils.getRandomItemFromArray;
 
@@ -19,8 +17,8 @@ public class FormTest extends TestBase {
         String[] hobbies = {"Sports", "Reading", "Music"};
         //String[] state = {"NCR", "Uttar Pradesh", "Haryana","Rajasthan"};
         String[] city = {"Delhi", "Gurgaon", "Noida"};
-        String[] month = {"January", "February", "March","April", "May", "June",
-                "July", "August", "September","October", "November", "December"};
+        String[] month = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
 
         String userName = faker.pokemon().name(),
                 userLastName = faker.gameOfThrones().house(),
@@ -33,9 +31,9 @@ public class FormTest extends TestBase {
                 userCity = getRandomItemFromArray(city),
                 address = faker.rickAndMorty().location(),
                 file = "pictures/img1.png",
-                userDate = String.valueOf(getRandomInt(10,28)),
-        userMonth = getRandomItemFromArray(month),
-        userYear = String.valueOf(getRandomInt(1900,2100));
+                userDate = String.valueOf(getRandomInt(10, 28)),
+                userMonth = getRandomItemFromArray(month),
+                userYear = String.valueOf(getRandomInt(1900, 2100));
         //userDate = getRandomInt(10,100);
 
 
@@ -67,7 +65,7 @@ public class FormTest extends TestBase {
                 .verifyResults("Hobbies", userHobbies)
                 .verifyResults("Picture", "img1.png")
                 .verifyResults("Address", address)
-                .verifyResults("State and City",userState + " "+ userCity);
+                .verifyResults("State and City", userState + " " + userCity);
 
     }
 }
