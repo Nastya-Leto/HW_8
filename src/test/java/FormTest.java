@@ -1,22 +1,43 @@
+import com.github.javafaker.Faker;
 import pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
+
+import static utils.RandomUtils.getRandomInt;
+import static utils.RandomUtils.getRandomItemFromArray;
 
 public class FormTest extends TestBase {
     RegistrationPage registrationPage = new RegistrationPage();
 
     @Test
     void fillFormTest() {
-        String userName = "Anastasiya",
-                userLastName = "Zak",
-                email = "stasia-oops@yandex.ru",
-                gender = "Female",
-                phone = "8927111111",
-                subjects = "Arts",
-                hobbies = "Music",
-                state = "NCR",
-                city = "Noida",
-                address = "Samara",
-                file = "pictures/img1.png";
+
+        Faker faker = new Faker();
+        String[] genders = {"Male", "Female", "Other"};
+        String[] subjects = {"Arts", "Accounting", "English"};
+        String[] hobbies = {"Sports", "Reading", "Music"};
+        //String[] state = {"NCR", "Uttar Pradesh", "Haryana","Rajasthan"};
+        String[] city = {"Delhi", "Gurgaon", "Noida"};
+        String[] month = {"January", "February", "March","April", "May", "June",
+                "July", "August", "September","October", "November", "December"};
+
+        String userName = faker.pokemon().name(),
+                userLastName = faker.gameOfThrones().house(),
+                email = faker.internet().emailAddress(),
+                gender = getRandomItemFromArray(genders),
+                phone = faker.number().digits(10),
+                userSubjects = getRandomItemFromArray(subjects),
+                userHobbies = getRandomItemFromArray(hobbies),
+                userState = "NCR",
+                userCity = getRandomItemFromArray(city),
+                address = faker.rickAndMorty().location(),
+                file = "pictures/img1.png",
+                userDate = String.valueOf(getRandomInt(10,28)),
+        userMonth = getRandomItemFromArray(month),
+        userYear = String.valueOf(getRandomInt(1900,2100));
+        //userDate = getRandomInt(10,100);
+
 
         new RegistrationPage().openPage()
                 .closeBanner()
@@ -25,27 +46,28 @@ public class FormTest extends TestBase {
                 .setEMail(email)
                 .setGender(gender)
                 .setPhone(phone)
-                .setBirthDate("27", "May", "1991")
-                .setSubjects(subjects)
-                .setHobbies(hobbies)
+                .setBirthDate(userDate, userMonth, userYear)
+                //.setBirthDate("27", "May", "1991")
+                .setSubjects(userSubjects)
+                .setHobbies(userHobbies)
                 .setAddress(address)
-                .setState(state)
-                .setCity(city)
+                .setState(userState)
+                .setCity(userCity)
                 .addFile(file)
                 .setSubmit();
 
 
         registrationPage.verifyResultsModalAppears()
-                .verifyResults("Student Name", "Zak Anastasiya")
-                .verifyResults("Student Email", "stasia-oops@yandex.ru")
-                .verifyResults("Gender", "Female")
-                .verifyResults("Mobile", "8927111111")
-                .verifyResults("Date of Birth", "27 May,1991")
-                .verifyResults("Subjects", "Arts")
-                .verifyResults("Hobbies", "Music")
+                .verifyResults("Student Name", userLastName + " " + userName)
+                .verifyResults("Student Email", email)
+                .verifyResults("Gender", gender)
+                .verifyResults("Mobile", phone)
+                .verifyResults("Date of Birth", userDate + " " + userMonth + "," + userYear)
+                .verifyResults("Subjects", userSubjects)
+                .verifyResults("Hobbies", userHobbies)
                 .verifyResults("Picture", "img1.png")
-                .verifyResults("Address", "Samara")
-                .verifyResults("State and City", "NCR Noida");
+                .verifyResults("Address", address)
+                .verifyResults("State and City",userState + " "+ userCity);
 
     }
 }
